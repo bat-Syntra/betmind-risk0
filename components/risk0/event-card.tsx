@@ -53,13 +53,17 @@ export function EventCard({
 }) {
   const { participant1, participant2 } = event
 
+  const userCount = ((event.id.charCodeAt(0) * 37 + event.id.charCodeAt(1) * 13) % 80) + 40
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.04 }}
-      className="glass-card overflow-hidden rounded-2xl"
+      className="group glass-card glass-card-hover relative overflow-hidden rounded-2xl transition-all duration-300 hover:shadow-lg hover:shadow-neon-green/5"
     >
+      {/* hover glow overlay */}
+      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 ring-1 ring-neon-green/30 transition-opacity duration-300 group-hover:opacity-100" />
       {/* Tap area for analysis */}
       <Link href={`/analysis/${event.id}`} className="block px-4 pt-3 pb-2.5">
         {/* Top row: league + meta */}
@@ -151,8 +155,8 @@ export function EventCard({
         {/* User count on this pick */}
         {event.valueBets && event.valueBets.length > 0 && (
           <div className="mt-2 flex items-center gap-2">
-            <UserAvatars count={Math.floor(Math.random() * 100) + 50} />
-            <span className="text-[10px] text-muted-foreground">users on this pick</span>
+            <UserAvatars count={userCount} />
+            <span className="text-[10px] text-muted-foreground">{userCount} on this pick</span>
           </div>
         )}
       </Link>

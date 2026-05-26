@@ -31,8 +31,10 @@ export function BottomNav({
               key={tab.id}
               onClick={() => onTabChange(tab.id)}
               className={cn(
-                'relative flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 transition-colors',
-                isActive ? 'text-neon-green' : 'text-muted-foreground'
+                'relative flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 transition-all duration-200',
+                isActive
+                  ? 'bg-neon-green/10 text-neon-green'
+                  : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <div className="relative">
@@ -43,10 +45,7 @@ export function BottomNav({
                   </span>
                 )}
               </div>
-              <span className="text-[10px] font-medium">{tab.label}</span>
-              {isActive && (
-                <span className="absolute -top-1 left-1/2 h-0.5 w-5 -translate-x-1/2 rounded-full bg-neon-green" />
-              )}
+              <span className={cn('text-[10px] font-medium', isActive && 'font-bold')}>{tab.label}</span>
             </button>
           )
         })}

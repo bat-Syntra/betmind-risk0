@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 export function CounterStat({
@@ -21,26 +21,33 @@ export function CounterStat({
   className?: string
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true })
   const [displayed, setDisplayed] = useState(0)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (!isInView) return
-    const duration = 1000
-    const steps = 30
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+    const duration = 1200
+    const steps = 40
     const increment = value / steps
     let current = 0
-    const timer = setInterval(() => {
-      current += increment
-      if (current >= value) {
-        setDisplayed(value)
-        clearInterval(timer)
-      } else {
-        setDisplayed(Math.floor(current))
-      }
-    }, duration / steps)
-    return () => clearInterval(timer)
-  }, [isInView, value])
+    const delay = setTimeout(() => {
+      const timer = setInterval(() => {
+        current += increment
+        if (current >= value) {
+          setDisplayed(value)
+          clearInterval(timer)
+        } else {
+          setDisplayed(Math.floor(current))
+        }
+      }, duration / steps)
+      return () => clearInterval(timer)
+    }, 150)
+    return () => clearTimeout(delay)
+  }, [mounted, value])
 
   const colors = {
     green: 'text-neon-green',
@@ -53,7 +60,7 @@ export function CounterStat({
     <motion.div
       ref={ref}
       initial={{ opacity: 0, scale: 0.95 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : {}}
+      animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
       className={cn('flex flex-col gap-0.5 rounded-2xl bg-secondary/50 p-3.5', className)}
     >
