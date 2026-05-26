@@ -59,13 +59,13 @@ export function CounterStat({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.3 }}
-      className={cn('flex flex-col gap-0.5 rounded-2xl bg-secondary/50 p-3.5', className)}
+      transition={{ duration: 0.2 }}
+      className={cn('flex flex-col gap-0.5 border border-border bg-card p-3', className)}
     >
-      <span className="text-[10px] font-medium text-muted-foreground">{label}</span>
-      <span className={cn('text-xl font-bold tabular-nums', highlight && colors[highlight])}>
+      <span className="mono text-[10px] text-muted-foreground">{label}</span>
+      <span className={cn('mono text-xl font-bold tabular-nums', highlight && colors[highlight])}>
         {prefix}{displayed.toLocaleString()}{suffix}
       </span>
     </motion.div>

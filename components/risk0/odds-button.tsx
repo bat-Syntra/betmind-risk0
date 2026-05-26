@@ -23,15 +23,15 @@ export function OddsButton({
         onClick?.()
       }}
       className={cn(
-        'flex flex-1 flex-col items-center gap-0.5 rounded-xl border px-2 py-1.5 transition-all active:scale-95',
+        'flex flex-1 flex-col items-center gap-0.5 border px-2 py-1.5 transition-colors',
         isSelected
-          ? 'border-neon-green/40 bg-neon-green/10 text-neon-green'
-          : 'border-transparent bg-secondary/60 text-foreground active:bg-secondary',
+          ? 'border-accent/40 bg-accent/10 text-accent'
+          : 'border-border bg-secondary text-foreground hover:border-accent/20',
         className
       )}
     >
-      <span className="text-[9px] font-medium text-muted-foreground">{label}</span>
-      <span className="text-[13px] font-bold tabular-nums">{odds.toFixed(2)}</span>
+      <span className="text-[9px] text-muted-foreground">{label}</span>
+      <span className="mono text-[13px] font-semibold tabular-nums">{odds > 0 ? `+${odds}` : odds}</span>
     </button>
   )
 }

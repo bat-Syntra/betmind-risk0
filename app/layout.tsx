@@ -7,25 +7,24 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
-  title: 'BetMind - AI Sports Predictions',
+  title: 'BetMind — +EV Sports Betting Terminal',
   description:
-    'AI-powered sports betting predictions. UFC, NBA, NFL, Football. Find +EV value bets and winning strategies.',
-  generator: 'v0.app',
+    'Real-time +EV value bets, CLV tracking, and sharp money analysis. UFC, NBA, NFL, Football.',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'BetMind',
   },
   openGraph: {
-    title: 'BetMind - AI Sports Predictions',
-    description: 'AI-powered sports betting predictions',
+    title: 'BetMind — +EV Sports Betting Terminal',
+    description: 'Real-time +EV value bets and CLV tracking',
     url: 'https://betmind.biz',
     siteName: 'BetMind',
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0b1120',
+  themeColor: '#0a0a0a',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,

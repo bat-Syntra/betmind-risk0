@@ -5,32 +5,32 @@ import { cn } from '@/lib/utils'
 type BadgeVariant = 'value' | 'hot' | 'sharp' | 'live' | 'premium'
 
 const variantStyles: Record<BadgeVariant, string> = {
-  value: 'bg-neon-green/10 text-neon-green',
-  hot: 'bg-hot-red/10 text-hot-red',
-  sharp: 'bg-gold/10 text-gold',
-  live: 'bg-hot-red/15 text-hot-red',
-  premium: 'bg-gold/10 text-gold',
+  value: 'border-positive/30 text-positive',
+  hot: 'border-negative/30 text-negative',
+  sharp: 'border-accent/30 text-accent',
+  live: 'border-live-pulse/30 text-live-pulse',
+  premium: 'border-accent/30 text-accent',
 }
 
 const variantLabels: Record<BadgeVariant, string> = {
-  value: '+EV Value',
-  hot: 'Hot',
-  sharp: 'Sharp',
+  value: '+EV',
+  hot: 'hot',
+  sharp: 'sharp',
   live: 'LIVE',
-  premium: 'PRO',
+  premium: 'pro',
 }
 
 export function BadgePill({ variant, label, className }: { variant: BadgeVariant; label?: string; className?: string }) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-semibold',
+        'mono inline-flex items-center gap-1 border px-1 py-px text-[10px] tabular-nums',
         variantStyles[variant],
         variant === 'live' && 'live-pulse',
         className
       )}
     >
-      {variant === 'live' && <span className="inline-block h-1.5 w-1.5 rounded-full bg-hot-red" />}
+      {variant === 'live' && <span className="inline-block h-1 w-1 rounded-full bg-live-pulse" />}
       {label || variantLabels[variant]}
     </span>
   )

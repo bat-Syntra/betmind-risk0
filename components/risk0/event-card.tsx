@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils'
 import { Event } from '@/lib/types'
 import { BadgePill } from './badge-pill'
 import { OddsButton } from './odds-button'
-import { UserAvatars } from '@/components/betmind/user-avatars'
 
 function Avatar({ name, shortName }: { name: string; shortName: string }) {
   const hues: Record<string, string> = {
@@ -53,17 +52,16 @@ export function EventCard({
 }) {
   const { participant1, participant2 } = event
 
-  const userCount = ((event.id.charCodeAt(0) * 37 + event.id.charCodeAt(1) * 13) % 80) + 40
+  const ev = event.valueBets?.[0]?.expectedValue
+  const sharpPct = event.aiConfidence
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: index * 0.04 }}
-      className="group glass-card glass-card-hover relative overflow-hidden rounded-2xl transition-all duration-300 hover:shadow-lg hover:shadow-neon-green/5"
+      className="glass-card glass-card-hover overflow-hidden transition-colors duration-200"
     >
-      {/* hover glow overlay */}
-      <div className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 ring-1 ring-neon-green/30 transition-opacity duration-300 group-hover:opacity-100" />
       {/* Tap area for analysis */}
       <Link href={`/analysis/${event.id}`} className="block px-4 pt-3 pb-2.5">
         {/* Top row: league + meta */}
@@ -120,23 +118,17 @@ export function EventCard({
           </div>
         </div>
 
-        {/* AI bar */}
-        <div className="mb-2">
-          <div className="mb-1 flex items-center justify-between">
-            <span className="text-[10px] font-medium text-muted-foreground">AI Confidence</span>
-            <span className="text-[10px] font-bold tabular-nums text-neon-green">{event.aiConfidence}%</span>
-          </div>
-          <div className="h-1 w-full overflow-hidden rounded-full bg-secondary">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${event.aiConfidence}%` }}
-              transition={{ duration: 0.7, delay: index * 0.04 + 0.2 }}
-              className={cn(
-                'h-full rounded-full',
-                event.aiConfidence >= 75 ? 'bg-neon-green' : event.aiConfidence >= 60 ? 'bg-gold' : 'bg-hot-red'
-              )}
-            />
-          </div>
+        {/* Metrics row: EV / CLV / Sharp */}
+        <div className="mb-2 flex items-center gap-2.5">
+          {ev != null && (
+            <span className="mono text-[11px] tabular-nums text-positive">
+              +{ev.toFixed(1)}% EV
+            </span>
+          )}
+          {ev != null && <span className="text-[#525252]">·</span>}
+          <span className="mono text-[11px] tabular-nums text-muted-foreground">
+            Sharp {sharpPct}%
+          </span>
         </div>
 
         {/* Badges */}
@@ -152,13 +144,6 @@ export function EventCard({
           <ChevronRight className="h-4 w-4 text-muted-foreground/30" />
         </div>
 
-        {/* User count on this pick */}
-        {event.valueBets && event.valueBets.length > 0 && (
-          <div className="mt-2 flex items-center gap-2">
-            <UserAvatars count={userCount} />
-            <span className="text-[10px] text-muted-foreground">{userCount} on this pick</span>
-          </div>
-        )}
       </Link>
 
       {/* Odds strip */}

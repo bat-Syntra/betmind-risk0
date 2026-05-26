@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { TrendingUp, ChevronRight } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { Header } from '@/components/risk0/header'
 import { BottomNav } from '@/components/risk0/bottom-nav'
 import { CounterStat } from '@/components/risk0/counter-stat'
@@ -11,15 +11,41 @@ import { EventCard } from '@/components/risk0/event-card'
 import { SearchView } from '@/components/risk0/search-bar'
 import { NewsView } from '@/components/risk0/news-feed'
 import { ParlayView } from '@/components/risk0/parlay-builder'
-import { UpgradeToast } from '@/components/betmind/upgrade-toast'
+import { StatusBar } from '@/components/betmind/status-bar'
+import { IntroSlideover } from '@/components/betmind/intro-slideover'
+import { ShortcutsOverlay } from '@/components/betmind/shortcuts-overlay'
+import { CommandPalette } from '@/components/betmind/command-palette'
+import { SiteFooter } from '@/components/betmind/site-footer'
+import { UTMBanner } from '@/components/betmind/utm-banner'
 import { sampleEvents, sportTabs, sportsNews } from '@/lib/data'
 import { ParlayPick } from '@/lib/types'
+
+const SPORT_KEYS = ['all', 'football', 'ufc', 'nba', 'nfl', 'boxing']
 
 export default function HomePage() {
   const [activeView, setActiveView] = useState('home')
   const [activeSport, setActiveSport] = useState('all')
   const [parlayPicks, setParlayPicks] = useState<ParlayPick[]>([])
   const [favorites, setFavorites] = useState<Set<string>>(new Set())
+  const [showShortcuts, setShowShortcuts] = useState(false)
+  const [showCommand, setShowCommand] = useState(false)
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName
+      const isInput = tag === 'INPUT' || tag === 'TEXTAREA'
+      if (e.key === 'Escape') { setShowShortcuts(false); setShowCommand(false) }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setShowCommand(true) }
+      if (!isInput && e.key === '?') setShowShortcuts(true)
+      if (!isInput && e.key === 'f') { setActiveView('search') }
+      if (!isInput && ['1','2','3','4','5'].includes(e.key)) {
+        const idx = parseInt(e.key) - 1
+        if (SPORT_KEYS[idx]) setActiveSport(SPORT_KEYS[idx])
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
 
   const toggleFavorite = useCallback((id: string) => {
     setFavorites((prev) => {
@@ -71,7 +97,9 @@ export default function HomePage() {
 
   return (
     <div className="relative flex min-h-dvh flex-col bg-background">
+      <UTMBanner />
       <Header />
+      <StatusBar />
 
       <AnimatePresence mode="wait">
         {activeView === 'home' && (
@@ -83,36 +111,8 @@ export default function HomePage() {
             transition={{ duration: 0.15 }}
             className="flex-1 overflow-y-auto scrollbar-none"
           >
-            {/* HERO SECTION */}
-            <section className="px-4 pt-4 pb-4">
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-                className="relative overflow-hidden rounded-2xl border border-neon-green/20 bg-gradient-to-r from-neon-green/10 via-emerald-500/5 to-neon-cyan/10 p-5"
-              >
-                {/* bg glow blobs */}
-                <div className="pointer-events-none absolute -right-4 -top-4 h-24 w-24 rounded-full bg-neon-green/20 blur-2xl" />
-                <div className="pointer-events-none absolute -bottom-4 right-12 h-16 w-16 rounded-full bg-neon-cyan/15 blur-2xl" />
-
-                <div className="relative">
-                  <div className="mb-2 flex items-center gap-2">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-green opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-neon-green" />
-                    </span>
-                    <span className="text-xs font-semibold text-neon-green">Live AI Analysis</span>
-                  </div>
-                  <h1 className="mb-1 text-2xl font-extrabold tracking-tight text-foreground">
-                    <span className="text-neon-green">12 Value Bets</span> Found Today
-                  </h1>
-                  <p className="text-[12px] text-muted-foreground">AI scanned 847 events across 6 sports</p>
-                </div>
-              </motion.div>
-            </section>
-
             {/* Stats */}
-            <section className="grid grid-cols-2 gap-2 px-4 pb-4">
+            <section className="grid grid-cols-2 gap-2 px-4 pt-3 pb-3">
               <CounterStat value={47} label="Active Events" highlight="cyan" />
               <CounterStat value={12} suffix=" +EV" label="Value Bets" highlight="green" />
               <CounterStat value={3} label="Arbitrage" highlight="gold" />
@@ -124,37 +124,27 @@ export default function HomePage() {
               <SportTabs tabs={sportTabs} activeTab={activeSport} onTabChange={setActiveSport} />
             </section>
 
-            {/* Value Bets Highlight — featured section */}
+            {/* Value Bets */}
             {activeSport === 'all' && valueBetEvents.length > 0 && (
-              <section className="px-4 pb-5">
-                <div className="relative">
-                  {/* glow behind section */}
-                  <div className="pointer-events-none absolute inset-0 rounded-2xl bg-neon-green/10 blur-2xl" />
-                  <div className="relative rounded-2xl border border-neon-green/25 bg-gradient-to-br from-secondary/80 to-secondary/40 p-4">
-                    <div className="mb-3 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg">🔥</span>
-                        <h2 className="text-sm font-bold text-foreground">Top Value Bets</h2>
-                        <span className="rounded bg-neon-green px-1.5 py-0.5 text-[10px] font-black text-primary-foreground">HOT</span>
-                      </div>
-                      <button className="flex items-center gap-0.5 text-[11px] font-medium text-neon-green">
-                        View All <ChevronRight className="h-3.5 w-3.5" />
-                      </button>
+              <section className="px-4 pb-4">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="mono text-[11px] uppercase tracking-widest text-muted-foreground">+ev picks</span>
+                  <button className="mono flex items-center gap-0.5 text-[11px] text-accent hover:text-foreground transition-colors">
+                    all <ChevronRight className="h-3 w-3" />
+                  </button>
+                </div>
+                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible">
+                  {valueBetEvents.slice(0, 3).map((event, i) => (
+                    <div key={event.id} className="w-[82vw] shrink-0 md:w-auto">
+                      <EventCard
+                        event={event}
+                        index={i}
+                        isFavorite={favorites.has(event.id)}
+                        onToggleFavorite={toggleFavorite}
+                        onAddToParlay={handleAddToParlay}
+                      />
                     </div>
-                    <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-none md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible">
-                      {valueBetEvents.slice(0, 3).map((event, i) => (
-                        <div key={event.id} className="w-[82vw] shrink-0 md:w-auto">
-                          <EventCard
-                            event={event}
-                            index={i}
-                            isFavorite={favorites.has(event.id)}
-                            onToggleFavorite={toggleFavorite}
-                            onAddToParlay={handleAddToParlay}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </section>
             )}
@@ -162,13 +152,10 @@ export default function HomePage() {
             {/* Live now section */}
             {filteredEvents.some(e => e.status === 'live') && (
               <section className="px-4 pb-4">
-                <div className="mb-3 flex items-center gap-2">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-hot-red opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-hot-red" />
-                  </span>
-                  <h2 className="text-sm font-bold text-foreground">Live Now</h2>
-                  <span className="rounded bg-hot-red/20 px-1.5 py-0.5 text-[10px] font-bold text-hot-red">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="live-pulse inline-block h-1.5 w-1.5 rounded-full bg-live-pulse" />
+                  <span className="mono text-[11px] uppercase tracking-widest text-muted-foreground">live now</span>
+                  <span className="mono text-[11px] text-live-pulse">
                     {filteredEvents.filter(e => e.status === 'live').length}
                   </span>
                 </div>
@@ -189,9 +176,9 @@ export default function HomePage() {
 
             {/* All Events */}
             <section className="px-4 pb-24">
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className="text-sm font-bold text-foreground">Upcoming</h2>
-                <span className="rounded-lg bg-secondary px-2 py-0.5 text-[11px] font-medium tabular-nums text-muted-foreground">
+              <div className="mb-2 flex items-center justify-between">
+                <span className="mono text-[11px] uppercase tracking-widest text-muted-foreground">upcoming</span>
+                <span className="mono text-[11px] text-[#525252] tabular-nums">
                   {filteredEvents.filter(e => e.status !== 'live').length}
                 </span>
               </div>
@@ -311,7 +298,19 @@ export default function HomePage() {
         )}
       </AnimatePresence>
 
-      <UpgradeToast />
+      <SiteFooter />
+      <button
+        onClick={() => setShowShortcuts(true)}
+        className="mono fixed bottom-20 right-3 z-30 hidden border border-border bg-card px-1.5 py-0.5 text-[10px] text-[#525252] transition-colors hover:text-foreground md:block"
+        aria-label="Show keyboard shortcuts"
+      >
+        ? shortcuts
+      </button>
+      <IntroSlideover />
+      <AnimatePresence>
+        {showShortcuts && <ShortcutsOverlay onClose={() => setShowShortcuts(false)} />}
+        {showCommand && <CommandPalette onClose={() => setShowCommand(false)} />}
+      </AnimatePresence>
 
       <BottomNav
         activeTab={activeView}

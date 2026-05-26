@@ -4,34 +4,36 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #0b1120;
-  --foreground: #e8edf5;
-  --card: rgba(15, 23, 42, 0.85);
-  --card-foreground: #e8edf5;
-  --popover: #0f172a;
-  --popover-foreground: #e8edf5;
-  --primary: #00e87b;
-  --primary-foreground: #0b1120;
-  --secondary: #1e293b;
-  --secondary-foreground: #cbd5e1;
-  --muted: #1a2236;
-  --muted-foreground: #64748b;
-  --accent: #06d6e0;
-  --accent-foreground: #0b1120;
+  /* Terminal palette */
+  --background: #0a0a0a;
+  --foreground: #e8e8e8;
+  --card: #131313;
+  --card-foreground: #e8e8e8;
+  --popover: #131313;
+  --popover-foreground: #e8e8e8;
+  --primary: #22c55e;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1c1c1c;
+  --secondary-foreground: #e8e8e8;
+  --muted: #1c1c1c;
+  --muted-foreground: #8a8a8a;
+  --accent: #f59e0b;
+  --accent-foreground: #0a0a0a;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.06);
-  --input: rgba(255, 255, 255, 0.06);
-  --ring: #00e87b;
-  --chart-1: #00e87b;
-  --chart-2: #06d6e0;
-  --chart-3: #ef4444;
-  --chart-4: #f59e0b;
-  --chart-5: #3b82f6;
-  --radius: 1rem;
+  --border: #262626;
+  --input: #1c1c1c;
+  --ring: #f59e0b;
+  --radius: 0.25rem;
+  /* Semantic tokens */
+  --positive: #22c55e;
+  --negative: #ef4444;
+  --live-pulse: #fb923c;
+  --text-mute: #525252;
+  /* Legacy aliases (kept for compatibility) */
   --gold: #f59e0b;
-  --neon-green: #00e87b;
-  --neon-cyan: #06d6e0;
+  --neon-green: #22c55e;
+  --neon-cyan: #f59e0b;
   --hot-red: #ef4444;
 }
 
@@ -57,18 +59,16 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --color-live-pulse: var(--live-pulse);
   --color-gold: var(--gold);
   --color-neon-green: var(--neon-green);
   --color-neon-cyan: var(--neon-cyan);
   --color-hot-red: var(--hot-red);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
   --radius-xl: calc(var(--radius) + 4px);
 }
 
@@ -78,6 +78,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 13px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;
@@ -85,94 +86,42 @@
   }
 }
 
-/* Hide scrollbar for a cleaner mobile feel */
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-none {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+/* Scrollbar */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Custom scrollbar for desktop */
 @media (min-width: 768px) {
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 3px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+  ::-webkit-scrollbar-thumb:hover { background: #3a3a3a; }
 }
 
-/* Glass surface */
+/* Terminal card — flat surface, no blur, no shadow */
 .glass-card {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--card);
+  border: 1px solid var(--border);
 }
 
 .glass-card-hover:hover {
-  border-color: rgba(0, 232, 123, 0.2);
+  border-color: rgba(245, 158, 11, 0.25);
 }
 
-/* Subtle glow */
-.neon-glow {
-  box-shadow: 0 0 16px rgba(0, 232, 123, 0.15);
-}
-
-/* Live indicator */
+/* Live dot — opacity transition only, no glow */
 @keyframes live-pulse {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  50% { opacity: 0.2; }
 }
+.live-pulse { animation: live-pulse 2s ease-in-out infinite; }
 
-.live-pulse {
-  animation: live-pulse 1.5s ease-in-out infinite;
-}
-
-/* Safe area for mobile bottom nav */
+/* Safe area */
 .pb-safe {
-  padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
 }
 
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #00e87b, #06d6e0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+/* Mono numbers utility */
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 
-/* Animations */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.5s ease-in-out;
-}
-
-.animate-slide-up {
-  animation: slide-up 0.4s ease-out;
-}
+/* Terminal surface variants */
+.surface { background: var(--card); border: 1px solid var(--border); }
+.surface-2 { background: var(--secondary); border: 1px solid var(--border); }
