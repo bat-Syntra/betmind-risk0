@@ -17,6 +17,7 @@ import { ShortcutsOverlay } from '@/components/betmind/shortcuts-overlay'
 import { CommandPalette } from '@/components/betmind/command-palette'
 import { SiteFooter } from '@/components/betmind/site-footer'
 import { UTMBanner } from '@/components/betmind/utm-banner'
+import { ProfileView } from '@/components/betmind/profile-view'
 import { sampleEvents, sportTabs, sportsNews } from '@/lib/data'
 import { ParlayPick } from '@/lib/types'
 
@@ -269,31 +270,9 @@ export default function HomePage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="flex flex-1 flex-col items-center justify-center px-4"
+            className="flex flex-1 flex-col overflow-hidden"
           >
-            <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-secondary">
-              <span className="text-2xl font-bold text-muted-foreground">U</span>
-            </div>
-            <h2 className="mb-1 text-lg font-bold text-foreground">Your Profile</h2>
-            <p className="mb-6 text-sm text-muted-foreground">Track your performance</p>
-            <div className="w-full max-w-sm space-y-3">
-              <div className="flex items-center justify-between rounded-2xl bg-secondary/50 px-4 py-3.5">
-                <span className="text-sm text-muted-foreground">Win Rate</span>
-                <span className="text-sm font-bold text-neon-green">67%</span>
-              </div>
-              <div className="flex items-center justify-between rounded-2xl bg-secondary/50 px-4 py-3.5">
-                <span className="text-sm text-muted-foreground">Total Bets</span>
-                <span className="text-sm font-bold text-foreground">142</span>
-              </div>
-              <div className="flex items-center justify-between rounded-2xl bg-secondary/50 px-4 py-3.5">
-                <span className="text-sm text-muted-foreground">Net Profit</span>
-                <span className="text-sm font-bold text-neon-green">+$4,238</span>
-              </div>
-              <div className="flex items-center justify-between rounded-2xl bg-secondary/50 px-4 py-3.5">
-                <span className="text-sm text-muted-foreground">Best Sport</span>
-                <span className="text-sm font-bold text-gold">UFC</span>
-              </div>
-            </div>
+            <ProfileView />
           </motion.main>
         )}
       </AnimatePresence>
