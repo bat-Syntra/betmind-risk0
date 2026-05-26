@@ -23,6 +23,7 @@ export function IntroSlideover() {
 
   useEffect(() => {
     if (getCookie('intro_seen')) return
+    if (typeof window !== 'undefined' && window.innerWidth >= 768) return
     const timer = setTimeout(() => setVisible(true), 2500)
     return () => clearTimeout(timer)
   }, [])
@@ -35,13 +36,22 @@ export function IntroSlideover() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.div
-          initial={{ x: '100%' }}
-          animate={{ x: 0 }}
-          exit={{ x: '100%' }}
-          transition={{ duration: 0.2, ease: 'easeOut' }}
-          className="fixed right-0 top-0 z-40 flex h-full w-[380px] max-w-[90vw] flex-col border-l border-border bg-card"
-        >
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-30 bg-background/60"
+            onClick={dismiss}
+          />
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="fixed right-0 top-0 z-40 flex h-full w-[340px] max-w-[92vw] flex-col border-l border-border bg-card"
+          >
           <div className="flex items-center justify-between border-b border-border px-4 py-3">
             <span className="mono text-xs font-bold text-foreground">What is BetMind?</span>
             <button
@@ -101,7 +111,8 @@ export function IntroSlideover() {
               Got it — dismiss
             </button>
           </div>
-        </motion.div>
+          </motion.div>
+        </>
       )}
     </AnimatePresence>
   )

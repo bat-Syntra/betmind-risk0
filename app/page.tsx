@@ -97,9 +97,9 @@ export default function HomePage() {
   const handleClearParlay = () => setParlayPicks([])
 
   return (
-    <div className="relative flex min-h-dvh flex-col bg-background">
+    <div className="relative mx-auto flex min-h-dvh w-full max-w-screen-xl flex-col bg-background">
       <UTMBanner />
-      <Header />
+      <Header activeView={activeView} onViewChange={setActiveView} />
       <StatusBar />
 
       <AnimatePresence mode="wait">
@@ -112,6 +112,7 @@ export default function HomePage() {
             transition={{ duration: 0.15 }}
             className="flex-1 overflow-y-auto scrollbar-none"
           >
+            <div className="mx-auto w-full max-w-5xl">
             {/* Stats */}
             <section className="grid grid-cols-3 gap-2 px-4 pt-3 pb-3">
               <CounterStat value={47} label="Active Events" highlight="cyan" />
@@ -198,6 +199,7 @@ export default function HomePage() {
 
             <SiteFooter />
             <div className="h-24" />
+            </div>
           </motion.main>
         )}
 
@@ -210,11 +212,13 @@ export default function HomePage() {
             transition={{ duration: 0.15 }}
             className="flex-1 overflow-y-auto scrollbar-none"
           >
+            <div className="mx-auto w-full max-w-5xl">
             <SearchView
               events={sampleEvents}
               favorites={favorites}
               onToggleFavorite={toggleFavorite}
             />
+            </div>
           </motion.main>
         )}
 
@@ -227,6 +231,7 @@ export default function HomePage() {
             transition={{ duration: 0.15 }}
             className="flex-1 overflow-y-auto pt-4 scrollbar-none"
           >
+            <div className="mx-auto w-full max-w-5xl">
             <div className="mb-4 px-4">
               <h2 className="text-lg font-bold text-foreground">Parlay Builder</h2>
               <p className="text-xs text-muted-foreground">
@@ -240,6 +245,7 @@ export default function HomePage() {
               onRemovePick={handleRemovePick}
               onClear={handleClearParlay}
             />
+            </div>
           </motion.main>
         )}
 
@@ -252,6 +258,7 @@ export default function HomePage() {
             transition={{ duration: 0.15 }}
             className="flex-1 overflow-y-auto scrollbar-none"
           >
+            <div className="mx-auto w-full max-w-5xl">
             <div className="px-4 pt-4 pb-3">
               <h2 className="text-lg font-bold text-foreground">Sports News</h2>
               <p className="text-xs text-muted-foreground">{sportsNews.length} updates</p>
@@ -261,6 +268,7 @@ export default function HomePage() {
             </div>
             <div className="pt-3">
               <NewsView news={filteredNews} />
+            </div>
             </div>
           </motion.main>
         )}
