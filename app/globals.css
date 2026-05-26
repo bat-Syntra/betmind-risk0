@@ -118,6 +118,13 @@
 .pb-safe {
   padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
 }
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+/* iPhone PWA: push header content below status bar */
+header.sticky {
+  padding-top: env(safe-area-inset-top, 0px);
+}
 
 /* Mono numbers utility */
 .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }

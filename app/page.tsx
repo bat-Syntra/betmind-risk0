@@ -113,10 +113,9 @@ export default function HomePage() {
             className="flex-1 overflow-y-auto scrollbar-none"
           >
             {/* Stats */}
-            <section className="grid grid-cols-2 gap-2 px-4 pt-3 pb-3">
+            <section className="grid grid-cols-3 gap-2 px-4 pt-3 pb-3">
               <CounterStat value={47} label="Active Events" highlight="cyan" />
               <CounterStat value={12} suffix=" +EV" label="Value Bets" highlight="green" />
-              <CounterStat value={3} label="Arbitrage" highlight="gold" />
               <CounterStat value={4238} prefix="$" label="Weekly P/L" highlight="green" />
             </section>
 
@@ -196,6 +195,9 @@ export default function HomePage() {
                 ))}
               </div>
             </section>
+
+            <SiteFooter />
+            <div className="h-24" />
           </motion.main>
         )}
 
@@ -277,7 +279,6 @@ export default function HomePage() {
         )}
       </AnimatePresence>
 
-      <SiteFooter />
       <button
         onClick={() => setShowShortcuts(true)}
         className="mono fixed bottom-20 right-3 z-30 hidden border border-border bg-card px-1.5 py-0.5 text-[10px] text-[#525252] transition-colors hover:text-foreground md:block"
