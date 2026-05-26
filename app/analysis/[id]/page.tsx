@@ -23,6 +23,8 @@ import { StatBar } from '@/components/risk0/stat-bar'
 import { ValueBetCard } from '@/components/risk0/value-bet-card'
 import { BadgePill } from '@/components/risk0/badge-pill'
 import { FormBadges } from '@/components/risk0/form-badges'
+import { BlurredContent } from '@/components/betmind/blurred-content'
+import { trackLockedView } from '@/components/betmind/upgrade-toast'
 
 function ParticipantAvatar({ name, shortName, large }: { name: string; shortName: string; large?: boolean }) {
   const colors = [
@@ -240,8 +242,9 @@ export default function AnalysisPage({ params }: { params: Promise<{ id: string 
                   {isUFCOrBoxing ? 'Fight Analysis' : 'Tactical Scenarios'}
                 </h3>
               </div>
-              <div className="flex flex-col gap-3">
-                {analysis.scenarios.map((scenario, i) => (
+              <BlurredContent requiredTier="pro" previewText="See detailed AI scenarios and predictions">
+                <div className="flex flex-col gap-3">
+                  {analysis.scenarios.map((scenario, i) => (
                   <motion.div
                     key={scenario.title}
                     initial={{ opacity: 0, x: 10 }}
@@ -259,8 +262,9 @@ export default function AnalysisPage({ params }: { params: Promise<{ id: string 
                       {scenario.description}
                     </p>
                   </motion.div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </BlurredContent>
             </motion.div>
 
             {/* Value Bets */}
@@ -278,11 +282,13 @@ export default function AnalysisPage({ params }: { params: Promise<{ id: string 
                   </div>
                   <BadgePill variant="premium" />
                 </div>
-                <div className="flex flex-col gap-3">
-                  {analysis.valueBets.map((bet, i) => (
-                    <ValueBetCard key={bet.market} bet={bet} index={i} />
-                  ))}
-                </div>
+                <BlurredContent requiredTier="pro" previewText="Unlock exact +EV percentages and betting edges">
+                  <div className="flex flex-col gap-3">
+                    {analysis.valueBets.map((bet, i) => (
+                      <ValueBetCard key={bet.market} bet={bet} index={i} />
+                    ))}
+                  </div>
+                </BlurredContent>
               </motion.div>
             )}
 
@@ -301,8 +307,9 @@ export default function AnalysisPage({ params }: { params: Promise<{ id: string 
                 Ask anything about this match
               </p>
 
-              {/* Quick Questions */}
-              <div className="mb-4 flex flex-wrap gap-2">
+              <BlurredContent requiredTier="pro" previewText="Chat with AI for personalized insights">
+                {/* Quick Questions */}
+                <div className="mb-4 flex flex-wrap gap-2">
                 {quickQuestions.map((q) => (
                   <button
                     key={q}
@@ -327,6 +334,7 @@ export default function AnalysisPage({ params }: { params: Promise<{ id: string 
                   <Send className="h-4 w-4" />
                 </button>
               </div>
+              </BlurredContent>
             </motion.div>
           </div>
         </div>

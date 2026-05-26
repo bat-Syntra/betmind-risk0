@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils'
 import { Event } from '@/lib/types'
 import { BadgePill } from './badge-pill'
 import { OddsButton } from './odds-button'
+import { UserAvatars } from '@/components/betmind/user-avatars'
 
 function Avatar({ name, shortName }: { name: string; shortName: string }) {
   const hues: Record<string, string> = {
@@ -146,6 +147,14 @@ export function EventCard({
           </div>
           <ChevronRight className="h-4 w-4 text-muted-foreground/30" />
         </div>
+
+        {/* User count on this pick */}
+        {event.valueBets && event.valueBets.length > 0 && (
+          <div className="mt-2 flex items-center gap-2">
+            <UserAvatars count={Math.floor(Math.random() * 100) + 50} />
+            <span className="text-[10px] text-muted-foreground">users on this pick</span>
+          </div>
+        )}
       </Link>
 
       {/* Odds strip */}

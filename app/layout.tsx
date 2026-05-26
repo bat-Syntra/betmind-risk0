@@ -7,14 +7,20 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
-  title: 'Risk0 AI - Multi-Sport Betting Intelligence',
+  title: 'BetMind - AI Sports Predictions',
   description:
-    'AI-powered multi-sport betting predictions with value bets, arbitrage detection, and smart parlay building.',
+    'AI-powered sports betting predictions. UFC, NBA, NFL, Football. Find +EV value bets and winning strategies.',
   generator: 'v0.app',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Risk0',
+    title: 'BetMind',
+  },
+  openGraph: {
+    title: 'BetMind - AI Sports Predictions',
+    description: 'AI-powered sports betting predictions',
+    url: 'https://betmind.biz',
+    siteName: 'BetMind',
   },
 }
 

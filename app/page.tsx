@@ -11,6 +11,9 @@ import { EventCard } from '@/components/risk0/event-card'
 import { SearchView } from '@/components/risk0/search-bar'
 import { NewsView } from '@/components/risk0/news-feed'
 import { ParlayView } from '@/components/risk0/parlay-builder'
+import { TrendingPicks } from '@/components/betmind/trending-picks'
+import { RecentWins } from '@/components/betmind/recent-wins'
+import { UpgradeToast } from '@/components/betmind/upgrade-toast'
 import { sampleEvents, sportTabs, sportsNews } from '@/lib/data'
 import { ParlayPick } from '@/lib/types'
 
@@ -88,6 +91,16 @@ export default function HomePage() {
               <CounterStat value={12} suffix=" +EV" label="Value Bets" highlight="green" />
               <CounterStat value={3} label="Arbitrage" highlight="gold" />
               <CounterStat value={4238} prefix="$" label="Weekly P/L" highlight="green" />
+            </section>
+
+            {/* Recent Wins Ticker */}
+            <section className="px-4">
+              <RecentWins />
+            </section>
+
+            {/* Trending Picks */}
+            <section className="px-4">
+              <TrendingPicks />
             </section>
 
             {/* Sport Tabs */}
@@ -266,6 +279,8 @@ export default function HomePage() {
           </motion.main>
         )}
       </AnimatePresence>
+
+      <UpgradeToast />
 
       <BottomNav
         activeTab={activeView}

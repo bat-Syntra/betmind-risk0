@@ -8,11 +8,11 @@ export function Header() {
       <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-neon-green">
-            <span className="text-xs font-black tracking-tighter text-primary-foreground">R0</span>
+            <span className="text-xs font-black tracking-tighter text-primary-foreground">BM</span>
           </div>
           <div>
             <h1 className="text-sm font-bold leading-none text-foreground">
-              Risk<span className="text-neon-green">0</span>
+              Bet<span className="text-neon-green">Mind</span>
             </h1>
             <p className="text-[10px] font-medium text-muted-foreground">AI Predictions</p>
           </div>
